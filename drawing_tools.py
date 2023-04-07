@@ -35,9 +35,10 @@ class image_analysis:
         print("Color Flipped")
         self.mode = not self.mode
 
-    def open_image(self):
+    def open_image(self, filename):
     # global img, mode
-        self.img = cv2.imread("/home/gavinswilson/Downloads/test.jpg", cv2.IMREAD_GRAYSCALE)
+        # self.img = cv2.imread("/home/gavinswilson/Downloads/test.jpg", cv2.IMREAD_GRAYSCALE)
+        self.img = cv2.imread(filename, cv2.IMREAD_GRAYSCALE)
         cv2.namedWindow('test_image')
         cv2.setMouseCallback('test_image', self.draw_line)
         while(1):
