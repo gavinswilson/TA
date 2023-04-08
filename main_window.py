@@ -92,6 +92,10 @@ class main_window(QDialog):
         button4.setObjectName('button4')
         # button2.move(10,60)
         button4.clicked.connect(self.get_drawing_color)
+        newcolorrgb = (self.image.color[2], self.image.color[1], self.image.color[0])
+        newStyle = "background-color : rgb" + str(newcolorrgb) + ";"
+        print(newStyle)
+        button4.setStyleSheet(newStyle)
       
 
         layout.addWidget(button3)

@@ -20,9 +20,7 @@ class image_analysis:
     def __init__(self) -> None:
         self.drawing = False
         self.mode = True
-        self.color_1 = (239,41,41)
-        self.color = (255,0,255)
-        self.color_2 = (41, 239, 41)
+        self.color = (255,0,0)
         self.ix = -1
         self.iy = -1
         self.img = np.zeros((512,512,3), np.uint8)
@@ -36,12 +34,11 @@ class image_analysis:
             self.iy = y
         elif event == cv2.EVENT_LBUTTONUP:
             drawing = False
+            print("color 1:" +str(self.color))
             if self.mode == True:
-                print("color 1:" +str(self.color_1))
-                cv2.line(self.img,(self.ix,self.iy),(x,y),self.color_1,5)
+                cv2.line(self.img,(self.ix,self.iy),(x,y),self.color,5)
             else:
-                print("color 2:" +str(self.color_2))
-                cv2.line(self.img,(self.ix,self.iy),(x,y),self.color_2,5)
+                cv2.line(self.img,(self.ix,self.iy),(x,y),self.color,5)
                 # cv2.circle(img,(x,y),5,(0,0,255),-1)
 
     def draw_circle(self,event,x,y,flags,param):
@@ -55,8 +52,8 @@ class image_analysis:
     
     def set_drawing_color(self, newcolor):
         print("new Color:" + str(newcolor))
-        self.color_1 = newcolor
-        print(self.color_1)
+        self.color = newcolor
+        print(self.color)
 
     def open_image(self, filename):
     # global img, mode
