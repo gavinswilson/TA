@@ -1,7 +1,22 @@
 import cv2
 import numpy as np
+import matplotlib.pyplot as plt
+
+# img=cv2.imread("/home/gavinswilson/Downloads/test.jpg")
+# RGB_img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+# start_point = (200,500)
+# end_point = (800,0)
+# line_color = (255,0,0)
+# line_thickness = 2
+# RGB_img = cv2.line(RGB_img, start_point, end_point, line_color, line_thickness)
+# grey_img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+# #Displaying image using plt.imshow() method
+# plt.imshow(RGB_img)
+
 
 class image_analysis:
+    viewer = "cv2" #or can be matlib....
+
     def __init__(self) -> None:
         self.drawing = False
         self.mode = True
