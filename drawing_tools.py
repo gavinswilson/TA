@@ -16,12 +16,13 @@ import matplotlib.pyplot as plt
 
 class image_analysis:
     viewer = "cv2" #or can be matlib....
-
+    
     def __init__(self) -> None:
         self.drawing = False
         self.mode = True
-        self.color_1 = (255,0,0)
-        self.color_2 = (0,255,0)
+        self.color_1 = (239,41,41)
+        self.color = (255,0,255)
+        self.color_2 = (41, 239, 41)
         self.ix = -1
         self.iy = -1
         self.img = np.zeros((512,512,3), np.uint8)
@@ -36,8 +37,10 @@ class image_analysis:
         elif event == cv2.EVENT_LBUTTONUP:
             drawing = False
             if self.mode == True:
+                print("color 1:" +str(self.color_1))
                 cv2.line(self.img,(self.ix,self.iy),(x,y),self.color_1,5)
             else:
+                print("color 2:" +str(self.color_2))
                 cv2.line(self.img,(self.ix,self.iy),(x,y),self.color_2,5)
                 # cv2.circle(img,(x,y),5,(0,0,255),-1)
 
@@ -49,11 +52,16 @@ class image_analysis:
     # global mode
         print("Color Flipped")
         self.mode = not self.mode
+    
+    def set_drawing_color(self, newcolor):
+        print("new Color:" + str(newcolor))
+        self.color_1 = newcolor
+        print(self.color_1)
 
     def open_image(self, filename):
     # global img, mode
         # self.img = cv2.imread("/home/gavinswilson/Downloads/test.jpg", cv2.IMREAD_GRAYSCALE)
-        self.img = cv2.imread(filename, cv2.IMREAD_GRAYSCALE)
+        self.img = cv2.imread(filename, cv2.IMREAD_COLOR)
         cv2.namedWindow('test_image')
         cv2.setMouseCallback('test_image', self.draw_line)
         while(1):

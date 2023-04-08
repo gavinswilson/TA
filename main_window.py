@@ -2,7 +2,7 @@ import sys
 from PyQt5.QtWidgets import (
     QApplication, QWidget, QPushButton, QFileDialog, QTextEdit, 
     QDialogButtonBox, QVBoxLayout, QMenuBar, QGroupBox, QHBoxLayout, QMenu,
-    QGridLayout, QLabel, QLineEdit, QFormLayout, QComboBox, QSpinBox, QDialog)
+    QGridLayout, QLabel, QLineEdit, QFormLayout, QComboBox, QSpinBox, QDialog, QColorDialog)
 from PyQt5.QtGui import QIcon
 from drawing_tools import image_analysis
 
@@ -15,7 +15,7 @@ class main_window(QDialog):
 
         self.image = image_analysis()
         self.filename = ""
-
+        self.default_color = (255,0,0)
         self.create_top_menu()
         self.create_file_options_box()
         self.create_file_info_box()
@@ -74,22 +74,30 @@ class main_window(QDialog):
         
         button1 = QPushButton()
         button1.setText("View Image")
-        button1.move(10,10)
+        # button1.move(10,10)
         button1.clicked.connect(self.view_image_file)
         
         button3 = QPushButton()
         button3.setText("Open File")
-        button3.move(10,30)
+        # button3.move(10,30)
         button3.clicked.connect(self.open_file_dialog)
         
-        button2 = QPushButton()
-        button2.setText("Change Line Color")
-        button2.move(10,60)
-        button2.clicked.connect(self.flip_color)
+        # button2 = QPushButton()
+        # button2.setText("Change Line Color")
+        # button2.move(10,60)
+        # button2.clicked.connect(self.flip_color)
+        
+        button4 = QPushButton()
+        button4.setText("Line Color")
+        button4.setObjectName('button4')
+        # button2.move(10,60)
+        button4.clicked.connect(self.get_drawing_color)
+      
 
         layout.addWidget(button3)
         layout.addWidget(button1)
-        layout.addWidget(button2)
+        # layout.addWidget(button2)
+        layout.addWidget(button4)
         # for i in range(self.num_buttons):
         #     button = QPushButton(f"Button {i + 1}")
         #     layout.addWidget(button)
@@ -159,6 +167,14 @@ class main_window(QDialog):
     def flip_color(self):
         print("Flip button Pushed")
         self.image.flip_color()
+    
+    def get_drawing_color(self):
+        color = QColorDialog.getColor()
+        newcolorbgr = (color.blue(), color.green(), color.red())
+        newcolorrgb = (color.red(), color.green(), color.blue())
+        newStyle = "QPushButton#button4 {background-color : rgb" + str(newcolorrgb) + "}"
+        self._file_options_box.setStyleSheet(newStyle)
+        self.image.set_drawing_color(newcolorbgr)
 
     def open_file_dialog(self):
         fname = QFileDialog.getOpenFileName()
