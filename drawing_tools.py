@@ -59,7 +59,7 @@ class image_analysis:
             print("color 1:" +str(self.color))
             if self.preview is not None:
                 self.preview = None
-                cv2.line(self.img,(self.ix,self.iy),(x,y),self.color,5)
+                cv2.line(self.img,(self.ix,self.iy),(x,y),self.color,self.thickness)
                 # cv2.circle(self.img,(x,y),100,(255,0,0),-1) 
      
     

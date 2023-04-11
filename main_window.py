@@ -2,7 +2,7 @@ import sys
 from PyQt5.QtWidgets import (
     QApplication, QWidget, QPushButton, QFileDialog, QTextEdit, 
     QDialogButtonBox, QVBoxLayout, QMenuBar, QGroupBox, QHBoxLayout, QMenu,
-    QGridLayout, QLabel, QLineEdit, QFormLayout, QComboBox, QSpinBox, QDialog, QColorDialog)
+    QGridLayout, QLabel, QLineEdit, QFormLayout, QComboBox, QSpinBox, QDialog, QColorDialog, QSlider)
 from PyQt5.QtGui import QIcon
 from drawing_tools import image_analysis
 
@@ -18,6 +18,7 @@ class main_window(QDialog):
         self.default_color = (255,0,0)
         self.create_top_menu()
         self.create_file_options_box()
+        self.create_sliders()
         self.create_file_info_box()
         # self.create_form_group_box()
 
@@ -32,6 +33,7 @@ class main_window(QDialog):
         main_layout = QVBoxLayout()
         main_layout.setMenuBar(self._main_menu_bar)
         main_layout.addWidget(self._file_options_box)
+        main_layout.addWidget(self._sliderbox)
         main_layout.addWidget(self._file_info_box)
         # main_layout.addWidget(self._form_group_box)
         # main_layout.addWidget(big_editor)
@@ -65,8 +67,39 @@ class main_window(QDialog):
         
         self._main_menu_bar.addMenu(self._view_menu)
         
+    def create_sliders(self):   
+        self._sliderbox = QGroupBox("Drawing Options")
+        layout = QHBoxLayout()
+        self.thickness_label = QLabel()
+        self.slider = QSlider()
+        self.slider.setMinimum(1)
+        self.slider.setMaximum(15)
+
+        line_color_button = QPushButton()
+        line_color_button.setText("Line Color")
+        line_color_button.setObjectName('button4')
+        # button2.move(10,60)
+        line_color_button.clicked.connect(self.get_drawing_color)
+        newcolorrgb = (self.image.color[2], self.image.color[1], self.image.color[0])
+        newStyle = "background-color : rgb" + str(newcolorrgb) + ";"
+        print(newStyle)
+        line_color_button.setStyleSheet(newStyle)
         
+        # self.slider.setTickPosition(TicksLeft)
+        # self.slider.setOrientation(Horizontal)
+        layout.addWidget(line_color_button)
+        layout.addWidget(self.slider)
+        layout.addWidget(self.thickness_label)
         
+        self._sliderbox.setLayout(layout)
+        # self.setGeometry(300, 300, 300, 150)
+        self.slider.valueChanged.connect(self.valuechange)
+        # self.show()
+
+    def valuechange(self):
+        txt = str(self.slider.value())
+        self.image.set_thickness(int(self.slider.value()))
+        self.thickness_label.setText(txt)      
 
     def create_file_options_box(self):
         self._file_options_box = QGroupBox("Image Options")
@@ -87,21 +120,13 @@ class main_window(QDialog):
         # button2.move(10,60)
         # button2.clicked.connect(self.flip_color)
         
-        button4 = QPushButton()
-        button4.setText("Line Color")
-        button4.setObjectName('button4')
-        # button2.move(10,60)
-        button4.clicked.connect(self.get_drawing_color)
-        newcolorrgb = (self.image.color[2], self.image.color[1], self.image.color[0])
-        newStyle = "background-color : rgb" + str(newcolorrgb) + ";"
-        print(newStyle)
-        button4.setStyleSheet(newStyle)
+        
       
 
         layout.addWidget(button3)
         layout.addWidget(button1)
         # layout.addWidget(button2)
-        layout.addWidget(button4)
+        
         # for i in range(self.num_buttons):
         #     button = QPushButton(f"Button {i + 1}")
         #     layout.addWidget(button)
@@ -176,7 +201,7 @@ class main_window(QDialog):
         color = QColorDialog.getColor()
         newcolorbgr = (color.blue(), color.green(), color.red())
         newcolorrgb = (color.red(), color.green(), color.blue())
-        newStyle = "QPushButton#button4 {background-color : rgb" + str(newcolorrgb) + ";}"
+        newStyle = "QPushButton#line_color_button {background-color : rgb" + str(newcolorrgb) + ";}"
         print(newStyle)
         self._file_options_box.setStyleSheet(newStyle)
         self.image.set_drawing_color(newcolorbgr)
