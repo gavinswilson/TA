@@ -176,7 +176,8 @@ class main_window(QDialog):
         color = QColorDialog.getColor()
         newcolorbgr = (color.blue(), color.green(), color.red())
         newcolorrgb = (color.red(), color.green(), color.blue())
-        newStyle = "QPushButton#button4 {background-color : rgb" + str(newcolorrgb) + "}"
+        newStyle = "QPushButton#button4 {background-color : rgb" + str(newcolorrgb) + ";}"
+        print(newStyle)
         self._file_options_box.setStyleSheet(newStyle)
         self.image.set_drawing_color(newcolorbgr)
 

@@ -15,54 +15,66 @@ import matplotlib.pyplot as plt
 
 
 class image_analysis:
+# ###########################################################################################################
+# Variables
+# ###########################################################################################################
     viewer = "cv2" #or can be matlib....
-    
+    preview = None
+    drawing_mode = None
+    file_name = None
+    thickness = None
+    color = (255,0,0)
+    ix = None
+    iy = None
+    img = None
+
+# ###########################################################################################################
+# Initialise Class
+# ###########################################################################################################
     def __init__(self) -> None:
         self.drawing = False
-        self.mode = True
+        # self.mode = True
         self.color = (255,0,0)
         self.ix = -1
         self.iy = -1
         self.img = np.zeros((512,512,3), np.uint8)
         pass
-
-    def draw_line(self,event,x,y,flags,param):
+# ###########################################################################################################
+# Image Functions
+# ###########################################################################################################
+    def draw(self,event,x,y,flags,param):
         # global img,ix,iy,drawing,mode
         if event == cv2.EVENT_LBUTTONDOWN:
             drawing = True
             self.ix = x
             self.iy = y
+            self.preview = self.img.copy()
+            cv2.line(self.preview, (self.ix, self.iy), (x,y), self.color, 1)
+        elif event == cv2.EVENT_MOUSEMOVE:
+            if self.preview is not None:
+                self.preview = self.img.copy()
+                cv2.line(self.preview, (self.ix, self.iy), (x,y), self.color, 1)
         elif event == cv2.EVENT_LBUTTONUP:
             drawing = False
             print("color 1:" +str(self.color))
-            if self.mode == True:
+            if self.preview is not None:
+                self.preview = None
                 cv2.line(self.img,(self.ix,self.iy),(x,y),self.color,5)
-            else:
-                cv2.line(self.img,(self.ix,self.iy),(x,y),self.color,5)
-                # cv2.circle(img,(x,y),5,(0,0,255),-1)
-
-    def draw_circle(self,event,x,y,flags,param):
-        if event == cv2.EVENT_LBUTTONDBLCLK:
-            cv2.circle(self.img,(x,y),100,(255,0,0),-1) 
+                # cv2.circle(self.img,(x,y),100,(255,0,0),-1) 
+     
     
-    def flip_color(self):
-    # global mode
-        print("Color Flipped")
-        self.mode = not self.mode
-    
-    def set_drawing_color(self, newcolor):
-        print("new Color:" + str(newcolor))
-        self.color = newcolor
-        print(self.color)
 
     def open_image(self, filename):
     # global img, mode
         # self.img = cv2.imread("/home/gavinswilson/Downloads/test.jpg", cv2.IMREAD_GRAYSCALE)
         self.img = cv2.imread(filename, cv2.IMREAD_COLOR)
         cv2.namedWindow('test_image')
-        cv2.setMouseCallback('test_image', self.draw_line)
+        cv2.setMouseCallback('test_image', self.draw)
         while(1):
-            cv2.imshow('test_image',self.img)
+            if self.preview is None:
+                cv2.imshow('test_image',self.img)
+            else:
+                cv2.imshow('test_image',self.preview)
             k = cv2.waitKey(1) & 0xFF
             if k == ord('m'):
                 self.mode = not self.mode
@@ -71,3 +83,33 @@ class image_analysis:
         # if cv2.waitKey(20) & 0xFF == 27:
         #     break
         cv2.destroyAllWindows()
+
+# ###########################################################################################################
+# Get and set functions
+# ###########################################################################################################
+    def set_drawing_color(self, newcolor):
+        # print("new Color:" + str(newcolor))
+        self.color = newcolor
+        # print(self.color)
+
+    def set_drawing_mode(self, mode):
+        self.drawing_mode = mode
+    
+    def set_file_name(self, file_name):
+        self.file_name = file_name
+    
+    def set_thickness(self, thickness):
+        self.thickness = thickness
+
+    def get_drawing_mode(self):
+        return(self.drawing_mode)
+    
+    def get_file_name(self):
+        return(self.file_name)
+
+    def get_thickness(self):
+        return(self.thickness)
+    
+    def get_drawing_color(self):
+        return(self.color)
+# ###########################################################################################################
