@@ -27,6 +27,7 @@ class image_analysis:
     ix = None
     iy = None
     img = None
+    imageName = "Image1"
 
 # ###########################################################################################################
 # Initialise Class
@@ -68,13 +69,15 @@ class image_analysis:
     # global img, mode
         # self.img = cv2.imread("/home/gavinswilson/Downloads/test.jpg", cv2.IMREAD_GRAYSCALE)
         self.img = cv2.imread(filename, cv2.IMREAD_COLOR)
-        cv2.namedWindow(self.file_name)
-        cv2.setMouseCallback(self.file_name, self.draw)
+        cv2.namedWindow(self.imageName, cv2.WINDOW_NORMAL)
+        cv2.setMouseCallback(self.imageName, self.draw)
+        cv2.setWindowTitle(self.imageName, self.file_name)
+        # cv2.setWindowProperty(self.imageName, cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN, )
         while(1):
             if self.preview is None:
-                cv2.imshow(self.file_name,self.img)
+                cv2.imshow(self.imageName,self.img)
             else:
-                cv2.imshow(self.file_name,self.preview)
+                cv2.imshow(self.imageName,self.preview)
             k = cv2.waitKey(1) & 0xFF
             if k == ord('m'):
                 self.mode = not self.mode

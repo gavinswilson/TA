@@ -4,15 +4,21 @@ from PyQt5.QtWidgets import (
     QDialogButtonBox, QVBoxLayout, QMenuBar, QGroupBox, QHBoxLayout, QMenu,
     QGridLayout, QLabel, QLineEdit, QFormLayout, QComboBox, QSpinBox, QDialog, QColorDialog, QSlider)
 from PyQt5.QtGui import QIcon
+from PyQt5.QtCore import *
 from drawing_tools import image_analysis
+from settings import *
 
 class main_window(QDialog):
+    settings = yaml_data()
+    yamlSettings = None
+    settings_file = 'settings.yaml'
     num_grid_rows = 3
-    # num_buttons = 4
 
     def __init__(self):
         super().__init__()
-
+        
+        self.read_settings_file()
+        
         self.image = image_analysis()
         self.filename = ""
         self.default_color = (255,0,0)
@@ -41,6 +47,7 @@ class main_window(QDialog):
         self.setLayout(main_layout)
 
         self.setWindowTitle("Analysis")
+        self.setWindowFlags(Qt.WindowStaysOnTopHint)
         pass
 
     def create_top_menu(self):
@@ -215,4 +222,13 @@ class main_window(QDialog):
         print(self.filename)
         self.image.set_file_name(self.filename)
         self._small_editor.setPlainText(self.filename + "file loaded!")
+    
+    def read_settings_file(self):
+        self.settings.setFilename('settings.yaml')
+        self.settings.readFile()
+        self.settings.printData()
+        self.settings.changeData('filename', 'hello')
+        self.settings.printData()
+        self.settings.saveSettings()
+
     
