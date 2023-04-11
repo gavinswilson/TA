@@ -213,5 +213,6 @@ class main_window(QDialog):
         #     self.image.open_image(file)
         self.filename = fname[0]
         print(self.filename)
+        self.image.set_file_name(self.filename)
         self._small_editor.setPlainText(self.filename + "file loaded!")
     

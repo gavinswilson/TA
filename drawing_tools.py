@@ -68,13 +68,13 @@ class image_analysis:
     # global img, mode
         # self.img = cv2.imread("/home/gavinswilson/Downloads/test.jpg", cv2.IMREAD_GRAYSCALE)
         self.img = cv2.imread(filename, cv2.IMREAD_COLOR)
-        cv2.namedWindow('test_image')
-        cv2.setMouseCallback('test_image', self.draw)
+        cv2.namedWindow(self.file_name)
+        cv2.setMouseCallback(self.file_name, self.draw)
         while(1):
             if self.preview is None:
-                cv2.imshow('test_image',self.img)
+                cv2.imshow(self.file_name,self.img)
             else:
-                cv2.imshow('test_image',self.preview)
+                cv2.imshow(self.file_name,self.preview)
             k = cv2.waitKey(1) & 0xFF
             if k == ord('m'):
                 self.mode = not self.mode
