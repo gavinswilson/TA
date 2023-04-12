@@ -3,7 +3,8 @@ import yaml, io
 class yaml_data():
     filename = None
     data_loaded = None
-
+    version = "0.1"
+    
     def __init__(self):
         print ("did stuff")
 
@@ -13,6 +14,9 @@ class yaml_data():
     
     def setFilename(self, filename):
         self.filename = filename
+
+    def getVersion(self):
+        return self.version 
 
     def printData(self):
         print(self.filename)

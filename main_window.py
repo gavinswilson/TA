@@ -1,14 +1,17 @@
 import sys
+import os
 from PyQt5.QtWidgets import (
-    QApplication, QWidget, QPushButton, QFileDialog, QTextEdit, 
+    QApplication, QWidget, QPushButton, QFileDialog, QTextEdit,
     QDialogButtonBox, QVBoxLayout, QMenuBar, QGroupBox, QHBoxLayout, QMenu,
     QGridLayout, QLabel, QLineEdit, QFormLayout, QComboBox, QSpinBox, QDialog, QColorDialog, QSlider)
 from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import *
+from aboutDialog import AboutDialog
 from drawing_tools import image_analysis
 from settings import *
 
 class main_window(QDialog):
+    version = "0.1"
     settings = yaml_data()
     yamlSettings = None
     settings_file = 'settings.yaml'
@@ -72,6 +75,8 @@ class main_window(QDialog):
         self._help_menu = QMenu("&Help", self)
         self.help_image = self._help_menu.addAction("Help")
         self.help_image.triggered.connect(self.show_help)
+        self.about_image = self._help_menu.addAction("About")
+        self.about_image.triggered.connect(self.about)
         # -------- build Menu ----------- 
         self._main_menu_bar = QMenuBar()
         self._main_menu_bar.addMenu(self._file_menu)
@@ -235,10 +240,14 @@ class main_window(QDialog):
         self.settings.printData()
         self.settings.saveSettings()
 
+    def get_version(self):
+        return self.version
+    
     def show_help(self):
+        self.browser = QWebEngineView()
         self.browser.setUrl(QUrl("https://github.com/gavinswilson/TA"))
         print('Help Me!')
     
     def about(self):
-        dlg = AboutDialog()
+        dlg = AboutDialog(self.get_version(), self.image.get_version(), self.settings.getVersion()) 
         dlg.exec_()

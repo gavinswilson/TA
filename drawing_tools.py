@@ -27,6 +27,7 @@ class image_analysis:
     ix = None
     iy = None
     img = None
+    version = "0.12"
     img_clone = None
     imageName = "Image1"
     refpts = []
@@ -138,4 +139,7 @@ class image_analysis:
     
     def get_drawing_color(self):
         return(self.color)
+
+    def get_version(self):
+        return(self.version)
 # ###########################################################################################################
