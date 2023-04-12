@@ -51,28 +51,32 @@ class main_window(QDialog):
         pass
 
     def create_top_menu(self):
-        self._main_menu_bar = QMenuBar()
-
+        
+        # -------- file Menu -----------
         self._file_menu = QMenu("&File", self)
         
-        self.open = self._file_menu.addAction("&Open")
-        self.open.triggered.connect(self.open_file_dialog)
+        self.open_action = self._file_menu.addAction("&Open")
+        self.open_action.triggered.connect(self.open_file_dialog)
 
-        self.open = self._file_menu.addAction("Open Settings")
-        self.open = self._file_menu.addAction("&Save")
-        self.open = self._file_menu.addAction("Save Settings")
+        self.open_settings = self._file_menu.addAction("Open Settings")
+        self.save_image = self._file_menu.addAction("&Save")
+        self.save_settings = self._file_menu.addAction("Save Settings")
         
         self._exit_action = self._file_menu.addAction("E&xit")
         self._exit_action.triggered.connect(self.accept)
-
-        self._main_menu_bar.addMenu(self._file_menu)
-
+        # -------- View Menu -----------
         self._view_menu = QMenu("&View", self)
-        
         self.view_image = self._view_menu.addAction("View")
         self.view_image.triggered.connect(self.view_image_file)
-        
+        # -------- Help Menu ----------- 
+        self._help_menu = QMenu("&Help", self)
+        self.help_image = self._help_menu.addAction("Help")
+        self.help_image.triggered.connect(self.show_help)
+        # -------- build Menu ----------- 
+        self._main_menu_bar = QMenuBar()
+        self._main_menu_bar.addMenu(self._file_menu)
         self._main_menu_bar.addMenu(self._view_menu)
+        self._main_menu_bar.addMenu(self._help_menu)
         
     def create_sliders(self):   
         self._sliderbox = QGroupBox("Drawing Options")
@@ -231,4 +235,10 @@ class main_window(QDialog):
         self.settings.printData()
         self.settings.saveSettings()
 
+    def show_help(self):
+        self.browser.setUrl(QUrl("https://github.com/gavinswilson/TA"))
+        print('Help Me!')
     
+    def about(self):
+        dlg = AboutDialog()
+        dlg.exec_()

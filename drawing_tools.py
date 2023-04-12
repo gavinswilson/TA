@@ -27,7 +27,9 @@ class image_analysis:
     ix = None
     iy = None
     img = None
+    img_clone = None
     imageName = "Image1"
+    refpts = []
 
 # ###########################################################################################################
 # Initialise Class
@@ -49,6 +51,7 @@ class image_analysis:
             drawing = True
             self.ix = x
             self.iy = y
+            self.refpts.append(('Line Start', x,y,self.color,self.thickness))
             self.preview = self.img.copy()
             cv2.line(self.preview, (self.ix, self.iy), (x,y), self.color, 1)
         elif event == cv2.EVENT_MOUSEMOVE:
@@ -60,8 +63,11 @@ class image_analysis:
             print("color 1:" +str(self.color))
             if self.preview is not None:
                 self.preview = None
+                self.refpts.append(('Line End',x,y,self.color,self.thickness))
                 cv2.line(self.img,(self.ix,self.iy),(x,y),self.color,self.thickness)
                 # cv2.circle(self.img,(x,y),100,(255,0,0),-1) 
+                # print(self.refpts, self.color, self.thickness)
+                
      
     
 
@@ -86,10 +92,27 @@ class image_analysis:
         # if cv2.waitKey(20) & 0xFF == 27:
         #     break
         cv2.destroyAllWindows()
+# ###########################################################################################################
+# Maths Functions
+# ###########################################################################################################
+    def delete_last_object(self):
+        arraylen = len(self.refpts)
+        # print(arraylen)
+        if (self.refpts[arraylen-1][0] == 'Line End'):
+            self.refpts.pop()
+            self.refpts.pop()
+
+
+
+
 
 # ###########################################################################################################
 # Get and set functions
 # ###########################################################################################################
+    def set_image_savepoint(self):
+        self.refpts = []
+        self.img_clone = self.img.copy()
+    
     def set_drawing_color(self, newcolor):
         # print("new Color:" + str(newcolor))
         self.color = newcolor
